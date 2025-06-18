@@ -342,32 +342,36 @@ class MosquitoGame {
             const pair = this.handPairs[i];
             const leftHand = pair.leftHand;
             const rightHand = pair.rightHand;
-            
-            // 両手が蚊に向かって移動
-            const dx = this.player.x - (leftHand.x + rightHand.x) / 2;
-            const dy = this.player.y - (leftHand.y + rightHand.y) / 2;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance > 10) {
+
+            const centerX = (leftHand.x + rightHand.x) / 2;
+            const centerY = (leftHand.y + rightHand.y) / 2;
+
+            // プレイヤーと各手の距離
+            const leftDist = Math.hypot(this.player.x - leftHand.x, this.player.y - leftHand.y);
+            const rightDist = Math.hypot(this.player.x - rightHand.x, this.player.y - rightHand.y);
+
+            // 挟み込み開始条件
+            if (!pair.closing && leftDist < pair.attackRadius && rightDist < pair.attackRadius) {
+                pair.closing = true;
+            }
+
+            if (pair.closing) {
+                // 挟み込み動作
+                leftHand.x += (centerX - leftHand.x) * pair.closingSpeed;
+                leftHand.y += (centerY - leftHand.y) * pair.closingSpeed;
+                rightHand.x += (centerX - rightHand.x) * pair.closingSpeed;
+                rightHand.y += (centerY - rightHand.y) * pair.closingSpeed;
+            } else {
+                // プレイヤーを追尾
+                const dx = this.player.x - centerX;
+                const dy = this.player.y - centerY;
                 const angle = Math.atan2(dy, dx);
                 const speed = pair.speed;
-                
-                // 左手の移動
+
                 leftHand.x += Math.cos(angle + 0.3) * speed;
                 leftHand.y += Math.sin(angle + 0.3) * speed;
-                
-                // 右手の移動
                 rightHand.x += Math.cos(angle - 0.3) * speed;
                 rightHand.y += Math.sin(angle - 0.3) * speed;
-            } else {
-                // 蚊に近づいたら挟み撃ち動作
-                const centerX = (leftHand.x + rightHand.x) / 2;
-                const centerY = (leftHand.y + rightHand.y) / 2;
-                
-                leftHand.x += (centerX - leftHand.x) * 0.1;
-                leftHand.y += (centerY - leftHand.y) * 0.1;
-                rightHand.x += (centerX - rightHand.x) * 0.1;
-                rightHand.y += (centerY - rightHand.y) * 0.1;
             }
             
             pair.life--;
@@ -418,6 +422,9 @@ class MosquitoGame {
                 if (smoke.life < 100) {
                     smoke.opacity = Math.max(0, smoke.opacity - 0.01);
                 }
+
+                // 時間経過で徐々に縮小
+                smoke.radius *= 0.997;
             }
             
             // 描画点を小さくゆらめかせ、煙をふらふら動かす
@@ -426,6 +433,7 @@ class MosquitoGame {
                 const maxR = smoke.radius * 1.25;
                 smoke.points.forEach(p => {
                     p.radius += (Math.random() - 0.5);
+                    p.angle += 0.01; // ゆっくり回転
                     if (p.radius < minR) p.radius = minR;
                     if (p.radius > maxR) p.radius = maxR;
                 });
@@ -584,7 +592,10 @@ class MosquitoGame {
                 type: 'right'
             },
             speed: config.handSpeed + Math.random() * 0.5,
-            life: 600 + Math.random() * 400
+            life: 600 + Math.random() * 400,
+            attackRadius: 80,
+            closingSpeed: 0.15,
+            closing: false
         });
     }
     
@@ -735,7 +746,7 @@ class MosquitoGame {
                 (this.player.y - smoke.y) ** 2
             );
             
-            if (distance < this.player.size + smoke.radius && smoke.opacity > 0.3) {
+            if (distance < this.player.size + smoke.radius && smoke.opacity > 0.2) {
                 this.takeDamage();
                 return;
             }
@@ -1129,6 +1140,7 @@ class MosquitoGame {
             this.ctx.beginPath();
             this.ctx.arc(joint2X, joint2Y, 0.8, 0, Math.PI * 2);
             this.ctx.fill();
+
         }
         
         // 血で膨らんだ腹部（より詳細）
@@ -1358,6 +1370,17 @@ class MosquitoGame {
                 this.ctx.arc(smoke.x, smoke.y, smoke.radius, 0, Math.PI * 2);
             }
             this.ctx.fill();
+            // 煙の渦巻きを描画
+            this.ctx.strokeStyle = "rgba(120,120,120,0.5)";
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            for (let a = 0; a <= Math.PI * 4; a += 0.2) {
+                const r = (smoke.radius * a) / (Math.PI * 4);
+                const px = smoke.x + Math.cos(a + smoke.life * 0.02) * r;
+                const py = smoke.y + Math.sin(a + smoke.life * 0.02) * r;
+                if (a === 0) this.ctx.moveTo(px, py); else this.ctx.lineTo(px, py);
+            }
+            this.ctx.stroke();
             
             // 煙のパーティクル
             smoke.particles.forEach(particle => {
