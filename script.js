@@ -63,16 +63,16 @@ class MosquitoGame {
             },
             { 
                 stage: 2, 
-                handSpeed: 1.5, 
+                handSpeed: 1.7, 
                 handPairs: 1, 
                 smokeCount: 1,           // 煙初登場
                 smokeSize: 40,           // 小さめの煙
                 smokeSpeed: 0.5,
-                stageThreshold: 80       // 血液5×16秒 or 血液8×10秒
+                stageThreshold: 70       // 血液5×16秒 or 血液8×10秒
             },
             { 
                 stage: 3, 
-                handSpeed: 1.8, 
+                handSpeed: 2.2, 
                 handPairs: 2,            // 手のペア増加
                 smokeCount: 1, 
                 smokeSize: 50,
@@ -81,63 +81,63 @@ class MosquitoGame {
             },
             { 
                 stage: 4, 
-                handSpeed: 2.1, 
-                handPairs: 2, 
+                handSpeed: 2.8, 
+                handPairs: 3, 
                 smokeCount: 2,           // 煙2つ
                 smokeSize: 60,
                 smokeSpeed: 1.0,
-                stageThreshold: 250      // 血液12×21秒
+                stageThreshold: 300      // 血液12×21秒
             },
             { 
                 stage: 5, 
-                handSpeed: 2.4,          // 中間ステージ
-                handPairs: 3, 
-                smokeCount: 2, 
+                handSpeed: 3.4,          // 中間ステージ
+                handPairs: 4, 
+                smokeCount: 3, 
                 smokeSize: 70,
                 smokeSpeed: 1.2,
-                stageThreshold: 400      // 血液16×25秒
+                stageThreshold: 500      // 血液16×25秒
             },
             { 
                 stage: 6, 
-                handSpeed: 2.7, 
-                handPairs: 3, 
+                handSpeed: 4.0, 
+                handPairs: 4, 
                 smokeCount: 3,           // 煙3つ
                 smokeSize: 75,
                 smokeSpeed: 1.5,
-                stageThreshold: 600      // 血液20×30秒
+                stageThreshold: 750      // 血液20×30秒
             },
             { 
                 stage: 7, 
-                handSpeed: 3.0, 
-                handPairs: 4,            // 手のペア4つ
-                smokeCount: 3, 
+                handSpeed: 4.6, 
+                handPairs: 5,            // 手のペア5つ
+                smokeCount: 4, 
                 smokeSize: 80,
                 smokeSpeed: 1.8,
-                stageThreshold: 850      // 血液25×34秒
+                stageThreshold: 1100      // 血液25×34秒
             },
             { 
                 stage: 8, 
-                handSpeed: 3.3, 
-                handPairs: 4, 
-                smokeCount: 4,           // 煙4つ
+                handSpeed: 5.2, 
+                handPairs: 6, 
+                smokeCount: 5,           // 煙5つ
                 smokeSize: 85,
                 smokeSpeed: 2.0,
-                stageThreshold: 1150     // 血液30×38秒
+                stageThreshold: 1550     // 血液30×38秒
             },
             { 
                 stage: 9, 
-                handSpeed: 3.6, 
-                handPairs: 5,            // 手のペア5つ
-                smokeCount: 4, 
+                handSpeed: 5.8, 
+                handPairs: 7,            // 手のペア7つ
+                smokeCount: 6, 
                 smokeSize: 90,
                 smokeSpeed: 2.3,
-                stageThreshold: 1500     // 血液35×43秒
+                stageThreshold: 2100     // 血液35×43秒
             },
             { 
                 stage: 10, 
-                handSpeed: 4.0,          // 最終ステージ（激ムズ）
-                handPairs: 6,            // 手のペア6つ
-                smokeCount: 5,           // 煙5つ
+                handSpeed: 6.4,          // 最終ステージ（激ムズ）
+                handPairs: 8,            // 手のペア8つ
+                smokeCount: 7,           // 煙7つ
                 smokeSize: 95,           // 大きな煙
                 smokeSpeed: 2.5,         // 速い煙の動き
                 stageThreshold: Infinity // クリア不要（サバイバル）
