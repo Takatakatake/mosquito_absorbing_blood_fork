@@ -572,17 +572,40 @@ class MosquitoGame {
     
     spawnSmokeArea() {
         const config = this.stageConfigs[this.currentStage - 1];
-        const x = Math.random() * (this.canvas.width - 120) + 60;
-        const y = Math.random() * (this.canvas.height - 120) + 60;
-        
+
         // ステージ設定に基づいた煙のサイズ
         const baseRadius = config.smokeSize || 40;
         const radius = baseRadius + Math.random() * 20;
-        
-        // 煙の移動速度をステージ設定から取得
+
         const speed = config.smokeSpeed || 0;
-        const angle = Math.random() * Math.PI * 2;
-        
+        const centerX = this.canvas.width / 2;
+        const centerY = this.canvas.height / 2;
+
+        let x, y;
+        do {
+            const side = Math.floor(Math.random() * 4);
+            switch (side) {
+                case 0: // 左から
+                    x = -radius;
+                    y = Math.random() * this.canvas.height;
+                    break;
+                case 1: // 右から
+                    x = this.canvas.width + radius;
+                    y = Math.random() * this.canvas.height;
+                    break;
+                case 2: // 上から
+                    x = Math.random() * this.canvas.width;
+                    y = -radius;
+                    break;
+                case 3: // 下から
+                    x = Math.random() * this.canvas.width;
+                    y = this.canvas.height + radius;
+                    break;
+            }
+        } while (Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2) < radius + this.player.size);
+
+        const angle = Math.atan2(centerY - y, centerX - x);
+
         this.smokeAreas.push({
             x: x,
             y: y,
