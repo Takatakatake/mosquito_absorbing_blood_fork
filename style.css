@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #87CEEB, #98FB98);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    touch-action: none;
+    user-select: none;
+}
+
+#gameContainer {
+    position: relative;
+    max-width: 800px;
+    width: 100%;
+    height: 600px;
+    background: #F0F8FF;
+    border: 3px solid #4682B4;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+#gameCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: linear-gradient(to bottom, #87CEEB 0%, #F0F8FF 100%);
+}
+
+#gameUI {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+    color: #333;
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+#gameUI div {
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 15px;
+    border: 2px solid #4682B4;
+}
+
+#progress {
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+#progressBar {
+    width: 150px;
+    height: 10px;
+    background: rgba(200, 200, 200, 0.8);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+#progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #45a049);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+#progressText {
+    font-size: 12px;
+    color: #666;
+}
+
+#gameComplete {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 3px solid #FFD700;
+    z-index: 200;
+}
+
+#gameComplete h2 {
+    color: #FFD700;
+    margin-bottom: 20px;
+    font-size: 2.2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#gameComplete p {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+#playAgainBtn {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+
+#playAgainBtn:hover {
+    background: linear-gradient(45deg, #FFA500, #FFD700);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+}
+
+#gameOver {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 3px solid #FF6B6B;
+    z-index: 200;
+}
+
+#startScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 3px solid #4CAF50;
+    z-index: 200;
+}
+
+#startScreen h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+#startScreen p {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+#gameOver h2 {
+    color: #FF6B6B;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+#gameOver p {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+button {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+button:hover {
+    background: linear-gradient(45deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+#restartBtn {
+    background: linear-gradient(45deg, #FF6B6B, #FF5252);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+#restartBtn:hover {
+    background: linear-gradient(45deg, #FF5252, #FF6B6B);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #gameContainer {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        border: none;
+    }
+    
+    #gameUI {
+        font-size: 16px;
+    }
+    
+    #startScreen, #gameOver {
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+    }
+    
+    #startScreen h1 {
+        font-size: 2em;
+    }
+    
+    button {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+}
+
+@media (max-height: 600px) {
+    #startScreen, #gameOver {
+        padding: 15px;
+    }
+    
+    #startScreen h1 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+    }
+    
+    #startScreen p {
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+}

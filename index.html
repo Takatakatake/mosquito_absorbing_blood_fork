@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蚊ゲーム - Mosquito Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="gameUI">
+            <div id="stage">ステージ: 1</div>
+            <div id="score">スコア: 0</div>
+            <div id="blood">血液: 0</div>
+            <div id="lives">ライフ: ♥♥♥</div>
+            <div id="timer">時間: 00:00</div>
+            <div id="progress">
+                <div id="progressBar">
+                    <div id="progressFill"></div>
+                </div>
+                <span id="progressText">次のステージまで</span>
+            </div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div id="gameOver" class="hidden">
+            <h2>ゲームオーバー</h2>
+            <p>到達ステージ: <span id="finalStage">1</span></p>
+            <p>最終スコア: <span id="finalScore">0</span></p>
+            <p>プレイ時間: <span id="finalTime">00:00</span></p>
+            <button id="restartBtn">もう一度プレイ</button>
+        </div>
+        <div id="gameComplete" class="hidden">
+            <h2>🎉 ゲームコンプリート！ 🎉</h2>
+            <p>全10ステージクリア達成！</p>
+            <p>最終スコア: <span id="completeScore">0</span></p>
+            <p>総プレイ時間: <span id="completeTime">00:00</span></p>
+            <button id="playAgainBtn">もう一度挑戦</button>
+        </div>
+        <div id="startScreen">
+            <h1>🦟 蚊ゲーム 🦟</h1>
+            <p>両手で挟み撃ちしてくる人間の手を避けよう！</p>
+            <p>血液を吸うとスコアアップ、でも速度ダウン</p>
+            <p>ライフは3つ！タップで蚊を操作</p>
+            <button id="startBtn">ゲーム開始</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
