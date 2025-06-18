@@ -420,6 +420,17 @@ class MosquitoGame {
                 }
             }
             
+            // 描画点を小さくゆらめかせ、煙をふらふら動かす
+            if (smoke.points) {
+                const minR = smoke.radius * 0.75;
+                const maxR = smoke.radius * 1.25;
+                smoke.points.forEach(p => {
+                    p.radius += (Math.random() - 0.5);
+                    if (p.radius < minR) p.radius = minR;
+                    if (p.radius > maxR) p.radius = maxR;
+                });
+            }
+
             // \u7159\u306e\u30d1\u30fc\u30c6\u30a3\u30af\u30eb\u306e\u751f\u6210
             if (Math.random() < 0.3) {
                 smoke.particles.push({
@@ -590,6 +601,14 @@ class MosquitoGame {
         const speed = config.smokeSpeed || 0;
         const angle = Math.random() * Math.PI * 2;
         
+        const pointCount = 14 + Math.floor(Math.random() * 4);
+        const points = [];
+        for (let i = 0; i < pointCount; i++) {
+            const a = (Math.PI * 2 * i) / pointCount;
+            const r = radius * (0.8 + Math.random() * 0.4);
+            points.push({ angle: a, radius: r });
+        }
+
         this.smokeAreas.push({
             x: x,
             y: y,
@@ -600,6 +619,7 @@ class MosquitoGame {
             maxLife: 800 + Math.random() * 400,
             particles: [],
             growing: true,
+            points: points,
             vx: Math.cos(angle) * speed,
             vy: Math.sin(angle) * speed
         });
@@ -1314,7 +1334,7 @@ class MosquitoGame {
         this.smokeAreas.forEach(smoke => {
             this.ctx.save();
             this.ctx.globalAlpha = smoke.opacity;
-            
+
             // 煙のメインエリア（グラデーション）
             const gradient = this.ctx.createRadialGradient(
                 smoke.x, smoke.y, 0,
@@ -1323,10 +1343,20 @@ class MosquitoGame {
             gradient.addColorStop(0, 'rgba(150, 150, 150, 0.8)');
             gradient.addColorStop(0.4, 'rgba(200, 200, 200, 0.6)');
             gradient.addColorStop(1, 'rgba(230, 230, 230, 0.1)');
-            
+
             this.ctx.fillStyle = gradient;
             this.ctx.beginPath();
-            this.ctx.arc(smoke.x, smoke.y, smoke.radius, 0, Math.PI * 2);
+            if (smoke.points) {
+                smoke.points.forEach((p, idx) => {
+                    const px = smoke.x + Math.cos(p.angle) * p.radius;
+                    const py = smoke.y + Math.sin(p.angle) * p.radius;
+                    if (idx === 0) this.ctx.moveTo(px, py);
+                    else this.ctx.lineTo(px, py);
+                });
+                this.ctx.closePath();
+            } else {
+                this.ctx.arc(smoke.x, smoke.y, smoke.radius, 0, Math.PI * 2);
+            }
             this.ctx.fill();
             
             // 煙のパーティクル
@@ -1346,7 +1376,17 @@ class MosquitoGame {
                 this.ctx.lineWidth = 3;
                 this.ctx.setLineDash([5, 5]);
                 this.ctx.beginPath();
-                this.ctx.arc(smoke.x, smoke.y, smoke.radius + 5, 0, Math.PI * 2);
+                if (smoke.points) {
+                    smoke.points.forEach((p, idx) => {
+                        const px = smoke.x + Math.cos(p.angle) * (p.radius + 5);
+                        const py = smoke.y + Math.sin(p.angle) * (p.radius + 5);
+                        if (idx === 0) this.ctx.moveTo(px, py);
+                        else this.ctx.lineTo(px, py);
+                    });
+                    this.ctx.closePath();
+                } else {
+                    this.ctx.arc(smoke.x, smoke.y, smoke.radius + 5, 0, Math.PI * 2);
+                }
                 this.ctx.stroke();
                 this.ctx.setLineDash([]);
             }
