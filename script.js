@@ -161,6 +161,13 @@ class MosquitoGame {
             invulnerable: false,
             invulnerableTime: 0
         };
+
+        // Number of blood drops required to gain one extra life
+        this.bloodForLife = 30;
+        // Counter for blood collected since last life gain
+        this.bloodSinceLife = 0;
+        // Hard cap for maximum lives attainable
+        this.maxLifeLimit = 6;
         
         this.handPairs = [];
         this.bloodDrops = [];
@@ -685,6 +692,17 @@ class MosquitoGame {
                 this.player.blood = Math.min(this.player.blood + bloodAmount, this.player.maxBlood);
                 this.score += drop.points;
                 this.totalBloodCollected += bloodAmount; // 血液量を集計
+                // Extra life mechanic - collect blood drops towards new life
+                this.bloodSinceLife += bloodAmount;
+                if (this.bloodSinceLife >= this.bloodForLife) {
+                    if (this.player.maxLives < this.maxLifeLimit) {
+                        this.player.maxLives++;
+                    }
+                    if (this.player.lives < this.player.maxLives) {
+                        this.player.lives++;
+                    }
+                    this.bloodSinceLife = 0;
+                }
                 this.createBloodParticles(drop.x, drop.y, drop.type);
             }
         }
