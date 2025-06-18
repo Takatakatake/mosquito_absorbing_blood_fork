@@ -133,14 +133,14 @@ class MosquitoGame {
                 smokeSpeed: 2.3,
                 stageThreshold: 1500     // 血液35×43秒
             },
-            { 
-                stage: 10, 
+            {
+                stage: 10,
                 handSpeed: 4.0,          // 最終ステージ（激ムズ）
                 handPairs: 6,            // 手のペア6つ
                 smokeCount: 5,           // 煙5つ
                 smokeSize: 95,           // 大きな煙
                 smokeSpeed: 2.5,         // 速い煙の動き
-                stageThreshold: Infinity // クリア不要（サバイバル）
+                stageThreshold: 2000     // 大きな値でクリア可能に
             }
         ];
     }
@@ -453,7 +453,7 @@ class MosquitoGame {
         const stageProgress = this.totalBloodCollected * survivalTime;
         const config = this.stageConfigs[this.currentStage - 1];
         
-        if (stageProgress >= config.stageThreshold && this.currentStage < 10) {
+        if (stageProgress >= config.stageThreshold) {
             this.advanceStage();
         }
     }
@@ -465,13 +465,14 @@ class MosquitoGame {
         // ステージクリアエフェクト
         this.createStageAdvanceEffect();
         
-        // 難易度更新
-        this.updateDifficultyForStage();
-        
         // ステージ10でゲームクリア
         if (this.currentStage > 10) {
             this.gameComplete();
+            return;
         }
+
+        // 難易度更新
+        this.updateDifficultyForStage();
     }
     
     updateParticles() {
